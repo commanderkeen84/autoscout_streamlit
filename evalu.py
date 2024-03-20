@@ -28,14 +28,12 @@ from sklearn.metrics import  r2_score, mean_absolute_error, mean_squared_error, 
 import scipy.stats
    
 
-
-
 def app():
     
     st.header("Machine learning Evaluation")
     
     #read DataFrame from pickle file
-    df_5= pd.read_pickle("ML_data.pkl")
+    df_5= pd.read_csv("ML_data.csv")
     
     # preparting the dataset 
     X = df_5.drop(columns='price')
