@@ -16,7 +16,7 @@ def app():
     st.header("Machine learning")
     
     #read DataFrame from pickle file
-    df= pd.read_csv("my_data.pkl")
+    df= pd.read_csv("my_data.csv")
 
     # Calculate counts for each make
     make_counts = df['make'].value_counts()
@@ -92,8 +92,8 @@ def app():
     df_5 = df_5.dropna(axis=0)
     
     # save dataframe to use in next chapter 
-    df_5.to_pickle("ML_data.pkl")     
-    
+    df_5.to_csv("ML_data.csv")
+  
     
     # preparting the dataset 
     X = df_5.drop(columns='price')
