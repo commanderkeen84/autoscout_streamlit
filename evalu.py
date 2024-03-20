@@ -35,7 +35,7 @@ def app():
     st.header("Machine learning Evaluation")
     
     #read DataFrame from pickle file
-    df_5= pd.read_pickle("C:/Users/reinh/OneDrive/Documents/02_Data-science_Fortbildung/Karriere-Coaching/Probe-Gespräch/ML_data.pkl")
+    df_5= pd.read_pickle("ML_data.pkl")
     
     # preparting the dataset 
     X = df_5.drop(columns='price')
