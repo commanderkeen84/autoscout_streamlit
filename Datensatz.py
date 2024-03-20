@@ -14,7 +14,8 @@ def app():
     st.header("Kennzahlen")
     
     # Creating data frame by reading csv file
-    df = pd.read_csv('C:/Users/reinh/OneDrive/Documents/02_Data-science_Fortbildung/Karriere-Coaching/Probe-Gespräch/autoscout24.csv') 
+    df = pd.read_csv('autoscout24.csv')
+    
 
     # remove null values duplicates  
     df = df.dropna(axis=0)
