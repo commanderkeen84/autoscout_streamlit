@@ -4,7 +4,7 @@
  # test change
 
 #Importiere Streamlit
-from matplotlib import widgets
+#from matplotlib import widgets
 import streamlit as st
 
 # Importiere die Seiten/Module
