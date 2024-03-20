@@ -109,7 +109,7 @@ def app():
     # save dataframe to use in next chapter ML 
     df.to_csv("my_data.csv")
 
-    
+
     st.subheader("4. Preis nach Antrieb")
     
     fig, ax = plt.subplots(figsize=(15, 8))
@@ -159,8 +159,8 @@ def app():
     # Create a scatter plot with regression lines for each fuel type
     fig, ax = plt.subplots(figsize=(10, 6))
     sns.scatterplot(data=df_filtered, x='mileage', y='price', hue='fuel', palette='coolwarm', s=100, ax=ax)
-    sns.regplot(data=df_filtered[df_filtered['fuel'] == 'Gasoline'], x='mileage', y='price', scatter=False, color='orange', label='Gasoline', lowess=True, ax=ax)
-    sns.regplot(data=df_filtered[df_filtered['fuel'] == 'Diesel'], x='mileage', y='price', scatter=False, color='blue', label='Diesel', lowess=True, ax=ax)
+    sns.regplot(data=df_filtered[df_filtered['fuel'] == 'Gasoline'], x='mileage', y='price', scatter=False, color='orange', label='Gasoline', lowess=False, ax=ax)
+    sns.regplot(data=df_filtered[df_filtered['fuel'] == 'Diesel'], x='mileage', y='price', scatter=False, color='blue', label='Diesel', lowess=False, ax=ax)
     ax.set_title('Preis vs. Kilometerstand', fontsize=16)
     ax.set_xlabel('Kilometerstand', fontsize=14)
     ax.set_ylabel('Preis', fontsize=14)
