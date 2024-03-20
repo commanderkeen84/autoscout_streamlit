@@ -106,6 +106,9 @@ def app():
     # Display the plot using st.pyplot()
     st.pyplot(fig)
     
+    # save dataframe to use in next chapter ML 
+    df.to_csv("my_data.csv")
+
     
     st.subheader("4. Preis nach Antrieb")
     
@@ -185,10 +188,4 @@ def app():
     
     # Pass the figure as an object to Streamlit
     st.pyplot(fig)
-
-
-    
-    # save dataframe to use in next chapter 
-    print(df.head)
-    df.to_csv("my_data.csv")
-    
+ 
