@@ -15,7 +15,7 @@ def app():
     
     # Creating data frame by reading csv file
     df = pd.read_csv('autoscout24.csv')
-    
+
 
     # remove null values duplicates  
     df = df.dropna(axis=0)
@@ -190,4 +190,5 @@ def app():
     
     # save dataframe to use in next chapter 
     print(df.head)
-    df.to_pickle("my_data.pkl") 
+    df.to_csv("my_data.csv")
+    
