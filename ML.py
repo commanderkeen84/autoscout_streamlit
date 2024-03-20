@@ -16,8 +16,8 @@ def app():
     st.header("Machine learning")
     
     #read DataFrame from pickle file
-    df= pd.read_pickle("my_data.pkl")
-    
+    df= pd.read_csv("my_data.pkl")
+
     # Calculate counts for each make
     make_counts = df['make'].value_counts()
     
