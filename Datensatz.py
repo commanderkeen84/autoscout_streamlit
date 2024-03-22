@@ -114,7 +114,7 @@ def app():
     
     fig, ax = plt.subplots(figsize=(15, 8))
     sns.boxplot(x='fuel', y='price', data=df, palette='pastel', ax=ax)
-    ax.set_title('Preis nach Antrieb)', fontsize=18)
+    ax.set_title('Preis nach Antrieb', fontsize=18)
     ax.set_xlabel('Antrieb', fontsize=14)
     ax.set_ylabel('Preis (in EUR)', fontsize=14)
     plt.xticks(rotation=45)
@@ -130,7 +130,7 @@ def app():
     fig, ax = plt.subplots(figsize=(15, 8))
     make_order = make_counts.index[:15]
     sns.boxplot(x='make', y='mileage', data=df, order=make_order, palette='pastel', ax=ax)
-    ax.set_title('Kilometerstand nach Marke (Top 15))', fontsize=18)
+    ax.set_title('Kilometerstand nach Marke (Top 15)', fontsize=18)
     ax.set_xlabel('Marke', fontsize=14)
     ax.set_ylabel('Kilometer', fontsize=14)
     plt.xticks(rotation=45)
@@ -142,7 +142,7 @@ def app():
     # Create a boxplot 
     fig, ax = plt.subplots(figsize=(15, 8))
     sns.boxplot(x='year', y='price', data=df, palette='pastel', ax=ax)
-    ax.set_title('Pries nach Jahr)', fontsize=18)
+    ax.set_title('Preis nach Jahr)', fontsize=18)
     ax.set_xlabel('Jahr', fontsize=14)
     ax.set_ylabel('Kilometer', fontsize=14)
     plt.xticks(rotation=45)
