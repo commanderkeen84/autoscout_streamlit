@@ -27,6 +27,7 @@ def app():
     Diese Homepage präsentiert die Datenanalyse des Automarkts anhand von Verkaufsdaten von Autoscout24. 
     
     Autor: [Reinhard Uehleke](https://www.linkedin.com/in/reinhard-uehleke-9bb740262/) 
+    [Code on Github](https://github.com/commanderkeen84/autoscout_streamlit)
     """)
 
     st.header("Datensatz")
