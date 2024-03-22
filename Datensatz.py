@@ -153,6 +153,7 @@ def app():
     
     
     st.subheader("7. Preis nach Kilometerstand (Diesel und Benzin)")
+    st.write"(Lowess braucht etwas Rechenzeit)
     # Filter the DataFrame to include only "Diesel" and "Gasoline" categories
     df_filtered = df[df['fuel'].isin(['Diesel', 'Gasoline'])]
     
