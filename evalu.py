@@ -30,7 +30,7 @@ import scipy.stats
 
 def app():
     
-    st.header("Machine learning Evaluation")
+    st.header("Machine Learning Evaluation")
     
     #read DataFrame from pickle file
     df_5= pd.read_csv("ML_data.csv")
@@ -96,7 +96,7 @@ def app():
             st.markdown(f"**{i + 1}:** {sorted_feature_names[i]}: {sorted_importances[i]:.4f}")
     
 
-        st.subheader(f"Predicted vs. actual proce of {name}")
+        st.subheader(f"Predicted vs. actual price of {name}")
         # Plot predicted price vs. actual price
         fig, ax = plt.subplots(figsize=(8, 8))
         ax.scatter(y_test, y_pred, color='blue', label='Predicted')
