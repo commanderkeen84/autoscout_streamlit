@@ -24,7 +24,7 @@ def app():
     #st.info("Wähle eine Seite im Navi links.")    # Erzeugt eine Infobox
 
     st.info("""
-    Diese Homepage präsentiert die Datenanalyse des Automarkts anhand von Verkaufsdaten von Autoscout24.
+    Diese Homepage präsentiert die Datenanalyse des Automarkts anhand von Verkaufsdaten von Autoscout24. Autor: Reinhard Uehleke
     """)
 
     st.header("Datensatz")
