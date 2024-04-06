@@ -11,12 +11,15 @@ import pandas as pd # For creating data frame
 import matplotlib.pyplot as plt # For plotting chart
 import seaborn as sns # For creating data visualization
 
+import json 
+
 def app():
     
-    st.header("Machine learning")
-    
+    st.header("Compare ML-Models")
+    st.write("Focus on top 5 car makes to reduce computation time")
+
     #read DataFrame from pickle file
-    df= pd.read_csv("my_data.csv")
+    df= pd.read_csv("mydata.csv")
 
     # Calculate counts for each make
     make_counts = df['make'].value_counts()
@@ -69,10 +72,7 @@ def app():
     # Filter the original DataFrame for the top 5 makes
     df_5 = df[df['make'].isin(df_5)]
     
-    # how many models 
-    # print(df_5['model'].value_counts())
-    # models has 146 possibilities 
-    
+
     st.subheader("Ausreißer nach Standardabweichungsmethode")
     st.code('''  
     mean = df_5['price'].mean()
@@ -124,9 +124,8 @@ preprocessor = ColumnTransformer(
 # Define models
 models = [
     ('OLS', LinearRegression()),
-    ('Poly', make_pipeline(PolynomialFeatures(degree=2), LinearRegression())),
-    ('Random Forest', RandomForestRegressor(max_depth=None, min_samples_leaf=1, min_samples_split=2, n_estimators=100, random_state=8956165)),
-    ('optimized Random Forest (grid search)', RandomForestRegressor(max_depth=None, min_samples_leaf=1, min_samples_split=5, n_estimators=100, random_state=8956165)), 
+    ('Polynomial regression (degree 2)', make_pipeline(PolynomialFeatures(degree=2), LinearRegression())),
+    ('Random Forest Regressor (sklearn default hyperparamters, except max_features=0.3)', RandomForestRegressor(max_depth=None, min_samples_leaf=1, max_features=0.3, min_samples_split=2, n_estimators=100, random_state=8956165)),
     ('Boosted tree', GradientBoostingRegressor(n_estimators=100, learning_rate=0.1, random_state=8956165))
 ]
 
@@ -145,13 +144,35 @@ for name, model in models:
     y_pred = pipeline.predict(X_test)
 
     # Evaluate performance
-    mse = mean_squared_error(y_test, y_pred)
-    mae = mean_absolute_error(y_test, y_pred)
+    mse_test = mean_squared_error(y_test, y_pred)
+    mae_test = mean_absolute_error(y_test, y_pred)
+        
+    # use test accuracy in later script with json 
+    if name == 'Random Forest Regressor (sklearn default hyperparameters, except max_features=0.3)':
+        mae_rf_default = mae_test
+        acc_scores = {'mae_rf_default': mae_rf_default}
+        with open('mae_rf_default.json', 'w') as f:
+            json.dump(acc_scores, f)
 
+    # Make predictions on train data
+    y_pred_train = pipeline.predict(X_train)
+    
+    # Evaluate performance
+    mse_train = mean_squared_error(y_train, y_pred_train)
+    mae_train = mean_absolute_error(y_train, y_pred_train)
+        
     # Display metrics in Streamlit
-    st.write(f"### {name} accuracy:")
-    st.write(f"- Mean Squared Error (MSE): {round(mse, 1)}")
-    st.write(f"- Mean Absolute Error (MAE): {round(mae, 1)}")
+    st.write(f"#### {name}")
+    st.write("test-accuracy:")
+    st.write(f"""
+        - Mean Squared Error (MSE): {round(mse_test, 1)}
+        - Mean Absolute Error (MAE): {round(mae_test, 1)}
+        """)
+    st.write("train-accuracy:")
+    st.write(f"""
+        - Mean Squared Error (MSE): {round(mse_train, 1)}
+        - Mean Absolute Error (MAE): {round(mae_train, 1)}
+        """)        
     ''')
     
     
@@ -176,12 +197,12 @@ for name, model in models:
     )
 
     # Define models
+    st.write("RandomForestRegressor has the default setting of max_features=1, which corresponds to a bagged tree. Here use 0.3*n_features to determine max features at each split in each random forest. ")
     models = [
         ('OLS', LinearRegression()),
-        ('Poly', make_pipeline(PolynomialFeatures(degree=2), LinearRegression())),
-        ('Random Forest',     RandomForestRegressor(max_depth=None, min_samples_leaf=1, min_samples_split=2, n_estimators=100, random_state=8956165)),
-        ('optimized Random Forest (grid search)', RandomForestRegressor(max_depth=None, min_samples_leaf=1, min_samples_split=5, n_estimators=100, random_state=8956165)), 
-        ('gbt_model', GradientBoostingRegressor(n_estimators=100, learning_rate=0.1, random_state=42))
+        ('Polynomial regression (degree 2)', make_pipeline(PolynomialFeatures(degree=2), LinearRegression())),
+        ('Random Forest Regressor (sklearn default hyperparameters, except max_features=0.3)',  RandomForestRegressor(max_depth=None, min_samples_leaf=1, max_features=0.3, min_samples_split=2, n_estimators=100, random_state=8956165)),
+        ('Boosted Random Forest Regressor', GradientBoostingRegressor(n_estimators=100, learning_rate=0.1, random_state=8956165))
     ]
     
     # Fit and evaluate each model
@@ -199,21 +220,39 @@ for name, model in models:
         y_pred = pipeline.predict(X_test)
     
         # Evaluate performance
-        mse = mean_squared_error(y_test, y_pred)
-        mae = mean_absolute_error(y_test, y_pred)
-    
-        # Display metrics in Streamlit
-        st.write(f"#### {name} accuracy:")
-        st.write(f"- Mean Squared Error (MSE): {round(mse, 1)}")
-        st.write(f"- Mean Absolute Error (MAE): {round(mae, 1)}")    
-    
-    st.write("Random Forest erzielt leicht bessere accuracy als Poly")    
-    
-    
+        mse_test = mean_squared_error(y_test, y_pred)
+        mae_test = mean_absolute_error(y_test, y_pred)
+        
+        # use test accuracy in later script with json 
+        if name == 'Random Forest Regressor (sklearn default hyperparameters, except max_features=0.3)':
+            mae_rf_default = mae_test
+            acc_scores = {'mae_rf_default': mae_rf_default}
+            with open('mae_rf_default.json', 'w') as f:
+                json.dump(acc_scores, f)
 
+        # Make predictions on train data
+        y_pred_train = pipeline.predict(X_train)
     
-    
-    
-    
-    
-    
+        # Evaluate performance
+        mse_train = mean_squared_error(y_train, y_pred_train)
+        mae_train = mean_absolute_error(y_train, y_pred_train)
+        
+        # Display metrics in Streamlit
+        st.write(f"#### {name}")
+        st.write("test-accuracy:")
+        st.write(f"""
+            - Mean Squared Error (MSE): {round(mse_test, 1)}
+            - Mean Absolute Error (MAE): {round(mae_test, 1)}
+             """)
+        st.write("train-accuracy:")
+        st.write(f"""
+            - Mean Squared Error (MSE): {round(mse_train, 1)}
+            - Mean Absolute Error (MAE): {round(mae_train, 1)}
+             """)
+ 
+    st.subheader("Summary of comparing model performance")
+    st.write("""
+             - Random Forest erzielt leicht bessere (test-) accuracy als Poly
+             - Train-accuracy >> test-accuracy for random forest indicates overfitting
+             - Simple polynomial regression does not perform worse than the gradient boosted random forest   
+             """)        

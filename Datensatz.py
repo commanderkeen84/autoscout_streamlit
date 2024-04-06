@@ -14,13 +14,8 @@ def app():
     st.header("Kennzahlen")
     
     # Creating data frame by reading csv file
-    df = pd.read_csv('autoscout24.csv')
+    df = pd.read_csv('df_clean.csv')
 
-
-    # remove null values duplicates  
-    df = df.dropna(axis=0)
-    df.drop_duplicates(inplace=True)
-    
     # davon Benzin Diesel Hybvrid Elektrisch gas 
     df['fuel'] = df['fuel'].replace({'CNG': 'CNG/LPG', 'LPG': 'CNG/LPG'})
     df['fuel'] = df['fuel'].replace({'Electric/Diesel': 'Others', 'Others ': 'CNG/LPG', '-/- (Fuel)': 'Others', 'Ethanol':'Others', 'Hydrogen':'Others' })
@@ -47,18 +42,11 @@ def app():
     # Print the resulting table
     print(pivot_df_with_percentage)
     
-    
-    # some outliers or coding errors seem present
-    # 1. remove max value of milage above 600000
-    df = df.drop(df[df['mileage'] >= 600000].index)
-    
-    # 2. remove prices above 600000
-    df = df.drop(df[df['price'] >= 600000].index)
-    
-    
-    # Filter the DataFrame to include only the top 15 values
+
+    # Filter the DataFrame to include only the top 15 brands 
     top_15_df = df['make'].value_counts().nlargest(15)
-    
+
+
     # Create the plot
     fig, ax = plt.subplots(figsize=(12, 6))
     sns.barplot(x=top_15_df.index, y=top_15_df.values, palette='plasma', ax=ax)
@@ -87,10 +75,13 @@ def app():
     # Display the plot using st.pyplot()
     st.pyplot(fig)
     
-    # Remove prices above 600000
+    # Remove prices above 200000
     df = df.drop(df[df['price'] > 200000].index)
+    df.to_csv("mydata.csv")
+
+    st.write("Look at cars with sales price below €200.000")
     
-    st.subheader("3. Verkaufspreise nach Marke (unter €200000)")
+    st.subheader("3. Verkaufspreise nach Marke (unter €200.000)")
     # Get the counts of each car make
     make_counts = df['make'].value_counts()
     
@@ -98,7 +89,7 @@ def app():
     fig, ax = plt.subplots(figsize=(15, 8))
     make_order = make_counts.index[:15]
     sns.boxplot(x='make', y='price', data=df, order=make_order, palette='pastel', ax=ax)
-    ax.set_title('Preis nach Marke (Top 15))', fontsize=18)
+    ax.set_title('Preis nach Marke (Top 15)', fontsize=18)
     ax.set_xlabel('Marke', fontsize=14)
     ax.set_ylabel('Preis (in EUR)', fontsize=14)
     plt.xticks(rotation=45)
@@ -106,10 +97,6 @@ def app():
     # Display the plot using st.pyplot()
     st.pyplot(fig)
     
-    # save dataframe to use in next chapter ML 
-    df.to_csv("my_data.csv")
-
-
     st.subheader("4. Preis nach Antrieb")
     
     fig, ax = plt.subplots(figsize=(15, 8))
@@ -142,7 +129,7 @@ def app():
     # Create a boxplot 
     fig, ax = plt.subplots(figsize=(15, 8))
     sns.boxplot(x='year', y='price', data=df, palette='pastel', ax=ax)
-    ax.set_title('Preis nach Jahr)', fontsize=18)
+    ax.set_title('Preis nach Jahr', fontsize=18)
     ax.set_xlabel('Jahr', fontsize=14)
     ax.set_ylabel('Kilometer', fontsize=14)
     plt.xticks(rotation=45)
@@ -170,7 +157,6 @@ def app():
     # Pass the figure as an object to Streamlit
     st.pyplot(fig)
     
-
     # Filter the DataFrame to include only "Diesel" and "Gasoline" categories
     df_filtered = df[df['fuel'].isin(['Diesel', 'Gasoline'])]
 

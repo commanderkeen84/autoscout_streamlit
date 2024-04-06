@@ -30,7 +30,7 @@ import scipy.stats
 
 def app():
     
-    st.header("Machine Learning Evaluation")
+    st.header("Evaluation of ML-Model")
     
     #read DataFrame from pickle file
     df_5= pd.read_csv("ML_data.csv")
@@ -57,9 +57,12 @@ def app():
         ]
     )
 
+    # best params from grid_search
+    best_params_grid={'max_depth': None, 'max_features': 'sqrt', 'min_samples_leaf': 1, 'min_samples_split': 5, 'n_estimators': 300}
+
     # Define models
     models = [
-        ('Random Forest',     RandomForestRegressor(max_depth=None, min_samples_leaf=1, min_samples_split=2, n_estimators=100, random_state=8956165))
+        ('Random Forest (best params from grid-search)', RandomForestRegressor(**best_params_grid, random_state=9874654))
     
     ]
     
@@ -91,7 +94,7 @@ def app():
         sorted_feature_names = all_feature_names[sorted_indices]
     
         # Display top ten important features and their names in Streamlit
-        st.subheader(f"Feature importance (top 10) of {name}")
+        st.subheader(f"Feature importance (top 10) of  \n {name}")
         for i in range(10):
             st.markdown(f"**{i + 1}:** {sorted_feature_names[i]}: {sorted_importances[i]:.4f}")
     
@@ -108,11 +111,30 @@ def app():
         ax.grid(True)
         st.pyplot(fig)
         
+        # Evaluate performance 
+        mse_rf = mean_squared_error(y_test, y_pred)
+        mae_rf = mean_absolute_error(y_test, y_pred)
+
+        # Display metrics in Streamlit
+        st.write("Test-Accuracy")
+        st.write(f"- Test Mean Squared Error (MSE): {round(mse_rf, 1)}")
+        st.write(f"- Test Mean Absolute Error (MAE): {round(mae_rf, 1)}")    
+
+        y_pred_train = pipeline.predict(X_train)
+        mse_rf = mean_squared_error(y_train, y_pred_train)
+        mae_rf = mean_absolute_error(y_train, y_pred_train)
+
+        st.write("Train-Accuracy")
+        st.write(f"- Train Mean Squared Error (MSE): {round(mse_rf, 1)}")
+        st.write(f"- Train Mean Absolute Error (MAE): {round(mae_rf, 1)}") 
+
+    st.write("  \nthe train accuracy is much better then the test accuracy. This could indicate that the model is overfitting the training data.")
+    
     st.subheader("Further steps") 
     st.write("""
-    - Improve accuracy by feature engineering, e.g., putting the models into classes of models to reduce nodes
+    - Currently all car models as categories -> consider summarising them into classes (e.g. small, middle, large) of cars  
     - Consider outlier exclusion more systematically
-    - Improve the training with grid-/random search
+    - Test performance of gradient boosted forest compared to random forest  
     - Improve understanding of prediciton accuracy using conformized prediction intervals
     """)
                  
