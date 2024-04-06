@@ -144,7 +144,9 @@ def app():
     - Das Verkaufsjahr ist unbekannt - oder sind alle Verkäufe aus dem letzten Jahr (2021)? Beschreibung unklar. 
     - Es gibt keine Information zu Austattungsmerkmalen
     """)
-                
+
+    st.write("May the forest be with you") 
+               
                 
                 
                 
